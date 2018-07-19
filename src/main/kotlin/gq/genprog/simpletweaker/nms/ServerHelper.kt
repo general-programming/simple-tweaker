@@ -26,17 +26,17 @@ object ServerHelper {
         return getPlayerByUidMeth.invoke(playerList, uid)
     }
 
-    fun broadcast(server: Any, textComponent: Any) {
+    fun broadcast(server: Any, textComponent: Any, isSystem: Boolean) {
         val playerListField = getServerClass().getDeclaredField("s").apply { isAccessible = true }
         val playerList = playerListField.get(server)
 
-        val broadcastMeth = playerListField.type.getDeclaredMethod("a", ClassDemystifier.getITextComponentClass())
-        broadcastMeth.invoke(playerList, textComponent)
+        val broadcastMeth = playerListField.type.getDeclaredMethod("a", ClassDemystifier.getITextComponentClass(), Boolean::class.java)
+        broadcastMeth.invoke(playerList, textComponent, isSystem)
     }
 
     fun broadcast(textComponent: Any) {
         Helper.getMinecraftServer()?.also {
-            this.broadcast(it, textComponent)
+            this.broadcast(it, textComponent, false)
         }
     }
 }

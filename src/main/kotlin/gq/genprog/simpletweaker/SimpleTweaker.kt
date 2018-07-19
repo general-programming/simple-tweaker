@@ -1,9 +1,11 @@
 package gq.genprog.simpletweaker
 
 import gq.genprog.simpletweaker.events.EventBus
+import gq.genprog.simpletweaker.events.TweakRunEvent
 import gq.genprog.simpletweaker.loader.LoadedTweak
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
+import java.io.File
 
 /**
  * Written by @offbeatwitch.
@@ -24,10 +26,12 @@ class SimpleTweaker {
     }
 
     fun runTweaks(stage: TweakStage) {
+        val ev = TweakRunEvent(File("."))
+
         tweaks.forEach {
             if (it.instance.getTweakStage() == stage) {
                 try {
-                    it.instance.runTweak()
+                    it.instance.runTweak(ev)
                 } catch (ex: Throwable) {
                     println("Mod ${it.id} threw an exception while running tweak ${it.instance} (tweak stage $stage)")
                     ex.printStackTrace()

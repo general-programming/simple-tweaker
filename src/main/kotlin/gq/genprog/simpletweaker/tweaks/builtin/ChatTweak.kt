@@ -2,6 +2,7 @@ package gq.genprog.simpletweaker.tweaks.builtin
 
 import gq.genprog.simpletweaker.events.EventHandler
 import gq.genprog.simpletweaker.events.PlayerChatEvent
+import gq.genprog.simpletweaker.events.TweakRunEvent
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
 
@@ -12,7 +13,7 @@ import gq.genprog.simpletweaker.tweaks.TweakStage
 class ChatTweak: ITweak {
     override fun getTweakStage() = TweakStage.POST_WORLD
 
-    override fun runTweak() {
+    override fun runTweak(ev: TweakRunEvent) {
         println("ChatTweak registered")
     }
 

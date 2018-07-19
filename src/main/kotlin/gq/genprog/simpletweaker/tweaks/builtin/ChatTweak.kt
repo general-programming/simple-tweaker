@@ -18,6 +18,6 @@ class ChatTweak: ITweak {
     }
 
     @EventHandler fun onPlayerChat(event: PlayerChatEvent) {
-        println("${event.getPlayerName()} wrote: ${event.message}")
+        println("${event.player.getUsername()} wrote: ${event.message}")
     }
 }

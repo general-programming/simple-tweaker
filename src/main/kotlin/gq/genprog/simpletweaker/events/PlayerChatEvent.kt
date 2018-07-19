@@ -1,18 +1,9 @@
 package gq.genprog.simpletweaker.events
 
-import gq.genprog.simpletweaker.nms.ClassDemystifier
-import java.util.*
+import gq.genprog.simpletweaker.api.IPlayer
 
 /**
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class PlayerChatEvent(val player: Any, val message: String) {
-    fun getPlayerName(): String {
-        return ClassDemystifier.getPlayerName(player)
-    }
-
-    fun getPlayerUniqueId(): UUID {
-        return ClassDemystifier.getPlayerUID(player)
-    }
-}
+class PlayerChatEvent(val player: IPlayer, val message: String)

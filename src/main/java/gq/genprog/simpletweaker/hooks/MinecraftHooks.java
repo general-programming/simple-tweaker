@@ -1,9 +1,12 @@
 package gq.genprog.simpletweaker.hooks;
 
 import gq.genprog.simpletweaker.SimpleTweaker;
+import gq.genprog.simpletweaker.api.IPlayer;
 import gq.genprog.simpletweaker.events.PlayerChatEvent;
 import gq.genprog.simpletweaker.events.PlayerJoinEvent;
+import gq.genprog.simpletweaker.events.PlayerLeaveEvent;
 import gq.genprog.simpletweaker.loader.ModLoader;
+import gq.genprog.simpletweaker.nms.wrappers.PlayerWrapper;
 import gq.genprog.simpletweaker.tweaks.TweakStage;
 
 import java.io.File;
@@ -41,10 +44,20 @@ public class MinecraftHooks {
 	}
 
 	public static void emitPlayerJoin(Object player) {
-		tweaker.getEventBus().post(new PlayerJoinEvent(player));
+		IPlayer wrapped = new PlayerWrapper(player);
+
+		tweaker.getEventBus().post(new PlayerJoinEvent(wrapped));
+	}
+
+	public static void emitPlayerLeave(Object player) {
+		IPlayer wrapped = new PlayerWrapper(player);
+
+		tweaker.getEventBus().post(new PlayerLeaveEvent(wrapped));
 	}
 
 	public static void emitChat(String message, Object player) {
-		tweaker.getEventBus().post(new PlayerChatEvent(player, message));
+		IPlayer wrapped = new PlayerWrapper(player);
+
+		tweaker.getEventBus().post(new PlayerChatEvent(wrapped, message));
 	}
 }

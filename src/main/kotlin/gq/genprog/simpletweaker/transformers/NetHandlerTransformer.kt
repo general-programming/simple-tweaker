@@ -42,6 +42,18 @@ class NetHandlerTransformer: ClassFileTransformer {
             }
         }
 
+        node.methods.find { it.name == "a" && it.desc == "(Lij;)V" }?.apply {
+            val extra = InsnList()
+
+            extra.add(VarInsnNode(Opcodes.ALOAD, 0))
+            extra.add(FieldInsnNode(Opcodes.GETFIELD, "ub", "b", "Lte;"))
+            extra.add(MethodInsnNode(Opcodes.INVOKESTATIC,
+                    "gq/genprog/simpletweaker/hooks/MinecraftHooks",
+                    "emitPlayerLeave", "(Ljava/lang/Object;)V", false))
+
+            instructions.insert(extra)
+        }
+
         val writer = ClassWriter(0)
         node.accept(writer)
 

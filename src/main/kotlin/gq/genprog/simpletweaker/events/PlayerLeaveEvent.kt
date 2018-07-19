@@ -6,4 +6,4 @@ import gq.genprog.simpletweaker.api.IPlayer
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class PlayerJoinEvent(val player: IPlayer)
+class PlayerLeaveEvent(val player: IPlayer)

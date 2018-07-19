@@ -7,6 +7,8 @@ import java.util.*
  * Licensed under MIT.
  */
 object ClassDemystifier {
+    fun getServerClass() = Class.forName("net.minecraft.server.MinecraftServer")
+
     fun getTextComponentBaseClass(): Class<*> {
         return Class.forName("ig")
     }
@@ -23,10 +25,6 @@ object ClassDemystifier {
         return this.getTextComponentStringClass().getDeclaredConstructor(String::class.java).newInstance(text)
     }
 
-    fun getTextComponentText(component: Any): String {
-        return this.getTextComponentBaseClass().getDeclaredMethod("getString").invoke(component) as String
-    }
-
     fun getPlayerMPClass(): Class<*> {
         return Class.forName("te")
     }
@@ -38,6 +36,8 @@ object ClassDemystifier {
     fun getEntityClass(): Class<*> {
         return Class.forName("aeo")
     }
+
+    fun getPlayerListClass() = Class.forName("vo")
 
     fun getPlayerName(player: Any): String {
         val getNameMeth = this.getPlayerClass().getDeclaredMethod("bv")

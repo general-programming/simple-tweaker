@@ -20,7 +20,7 @@ class ServerWrapper(private val server: Any): IServer {
         val playerList = this.getPlayerListNms()
 
         val getPlayerByUsernameMeth = ClassDemystifier.getPlayerListClass().getDeclaredMethod("a", String::class.java)
-        val nmsPlayer = getPlayerByUsernameMeth.invoke(playerList, username)
+        val nmsPlayer = getPlayerByUsernameMeth.invoke(playerList, username) ?: return null
 
         return PlayerWrapper(nmsPlayer)
     }
@@ -29,7 +29,7 @@ class ServerWrapper(private val server: Any): IServer {
         val playerList = this.getPlayerListNms()
 
         val getPlayerByUidMeth = ClassDemystifier.getPlayerListClass().getDeclaredMethod("a", UUID::class.java)
-        val nmsPlayer = getPlayerByUidMeth.invoke(playerList, uuid)
+        val nmsPlayer = getPlayerByUidMeth.invoke(playerList, uuid) ?: return null
 
         return PlayerWrapper(nmsPlayer)
     }

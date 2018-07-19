@@ -17,7 +17,7 @@ class PlayerWrapper(private val playerInst: Any): IPlayer {
         val sendTextCompMeth = ClassDemystifier.getPlayerMPClass().getDeclaredMethod("a",
                 ClassDemystifier.getITextComponentClass(), Boolean::class.java)
 
-        sendTextCompMeth.invoke(playerInst, ClassDemystifier.newTextComponentString(text))
+        sendTextCompMeth.invoke(playerInst, ClassDemystifier.newTextComponentString(text), false)
     }
 
     override fun asNMS(): Any = playerInst

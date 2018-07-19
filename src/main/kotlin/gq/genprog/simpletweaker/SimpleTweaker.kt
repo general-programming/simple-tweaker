@@ -1,30 +1,38 @@
 package gq.genprog.simpletweaker
 
 import gq.genprog.simpletweaker.events.EventBus
+import gq.genprog.simpletweaker.loader.LoadedTweak
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
-import gq.genprog.simpletweaker.tweaks.builtin.ChatTweak
 
 /**
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
 class SimpleTweaker {
-    val tweaks: ArrayList<ITweak> = arrayListOf(
-            ChatTweak()
-    )
+    var tweaks: ArrayList<LoadedTweak<ITweak>> = arrayListOf()
     val eventBus = EventBus()
+
+    fun injectTweaks(all: List<LoadedTweak<ITweak>>) {
+        tweaks.addAll(all)
+    }
 
     fun initTweaks() {
         tweaks.forEach {
-            eventBus.register(it)
+            eventBus.register(it.instance)
         }
     }
 
     fun runTweaks(stage: TweakStage) {
         tweaks.forEach {
-            if (it.getTweakStage() == stage)
-                it.runTweak()
+            if (it.instance.getTweakStage() == stage) {
+                try {
+                    it.instance.runTweak()
+                } catch (ex: Throwable) {
+                    println("Mod ${it.id} threw an exception while running tweak ${it.instance} (tweak stage $stage)")
+                    ex.printStackTrace()
+                }
+            }
         }
     }
 }

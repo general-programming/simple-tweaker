@@ -39,7 +39,7 @@ public class MinecraftHooks {
 		tweaker.getEventBus().post(new PlayerJoinEvent(player));
 	}
 
-	public static void emitChat(Object component) {
-		tweaker.getEventBus().post(new PlayerChatEvent(component));
+	public static void emitChat(String message, Object player) {
+		tweaker.getEventBus().post(new PlayerChatEvent(player, message));
 	}
 }

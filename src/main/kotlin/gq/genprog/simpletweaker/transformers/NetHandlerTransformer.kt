@@ -3,10 +3,7 @@ package gq.genprog.simpletweaker.transformers
 import jdk.internal.org.objectweb.asm.Opcodes
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.InsnList
-import org.objectweb.asm.tree.MethodInsnNode
-import org.objectweb.asm.tree.VarInsnNode
+import org.objectweb.asm.tree.*
 import java.lang.instrument.ClassFileTransformer
 import java.security.ProtectionDomain
 
@@ -34,10 +31,12 @@ class NetHandlerTransformer: ClassFileTransformer {
             }?.apply {
                 val extra = InsnList()
 
-                extra.add(VarInsnNode(Opcodes.ALOAD, 3))
+                extra.add(VarInsnNode(Opcodes.ALOAD, 2))
+                extra.add(VarInsnNode(Opcodes.ALOAD, 0))
+                extra.add(FieldInsnNode(Opcodes.GETFIELD, "ub", "b", "Lte;"))
                 extra.add(MethodInsnNode(Opcodes.INVOKESTATIC,
                         "gq/genprog/simpletweaker/hooks/MinecraftHooks",
-                        "emitChat", "(Ljava/lang/Object;)V", false))
+                        "emitChat", "(Ljava/lang/String;Ljava/lang/Object;)V", false))
 
                 instructions.insert(this, extra)
             }

@@ -43,7 +43,7 @@ they contain a top-level file, `tweak.json`, along with the actual classes
 
 #### tweak.json format
 
-```json
+```js
 {
   "id": "lowercase-id", // should be unique & lowercase
   "name": "Human Readable Name",

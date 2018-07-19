@@ -16,7 +16,7 @@ class ServerWrapper(private val server: Any): IServer {
         return playerListField.get(server)
     }
 
-    override fun getPlayer(username: String): IPlayer {
+    override fun getPlayer(username: String): IPlayer? {
         val playerList = this.getPlayerListNms()
 
         val getPlayerByUsernameMeth = ClassDemystifier.getPlayerListClass().getDeclaredMethod("a", String::class.java)
@@ -25,7 +25,7 @@ class ServerWrapper(private val server: Any): IServer {
         return PlayerWrapper(nmsPlayer)
     }
 
-    override fun getPlayer(uuid: UUID): IPlayer {
+    override fun getPlayer(uuid: UUID): IPlayer? {
         val playerList = this.getPlayerListNms()
 
         val getPlayerByUidMeth = ClassDemystifier.getPlayerListClass().getDeclaredMethod("a", UUID::class.java)

@@ -4,7 +4,6 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.*
-import java.io.File
 import java.lang.instrument.ClassFileTransformer
 import java.security.ProtectionDomain
 
@@ -56,6 +55,14 @@ class McServerTransformer: ClassFileTransformer {
                 wgMethod.instructions.insert(lastReturn.previous, MethodInsnNode(Opcodes.INVOKESTATIC,
                         "gq/genprog/simpletweaker/hooks/MinecraftHooks",
                         "postWorldInit", "()V", false))
+            }
+
+            // shutdown method
+
+            node.methods.find { it.name == "h_" }?.also { shutdownMethod ->
+                shutdownMethod.instructions.insert(MethodInsnNode(Opcodes.INVOKESTATIC,
+                        "gq/genprog/simpletweaker/hooks/MinecraftHooks",
+                        "emitShuttingDown", "()V", false))
             }
 
             val writer = ClassWriter(ClassWriter.COMPUTE_FRAMES)

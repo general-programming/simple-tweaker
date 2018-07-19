@@ -5,6 +5,7 @@ import gq.genprog.simpletweaker.api.IPlayer;
 import gq.genprog.simpletweaker.events.PlayerChatEvent;
 import gq.genprog.simpletweaker.events.PlayerJoinEvent;
 import gq.genprog.simpletweaker.events.PlayerLeaveEvent;
+import gq.genprog.simpletweaker.events.ServerStoppingEvent;
 import gq.genprog.simpletweaker.loader.ModLoader;
 import gq.genprog.simpletweaker.nms.wrappers.PlayerWrapper;
 import gq.genprog.simpletweaker.tweaks.TweakStage;
@@ -59,5 +60,9 @@ public class MinecraftHooks {
 		IPlayer wrapped = new PlayerWrapper(player);
 
 		tweaker.getEventBus().post(new PlayerChatEvent(wrapped, message));
+	}
+
+	public static void emitShuttingDown() {
+		tweaker.getEventBus().post(new ServerStoppingEvent());
 	}
 }

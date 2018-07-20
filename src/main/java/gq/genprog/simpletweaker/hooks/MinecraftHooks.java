@@ -1,6 +1,7 @@
 package gq.genprog.simpletweaker.hooks;
 
 import gq.genprog.simpletweaker.SimpleTweaker;
+import gq.genprog.simpletweaker.api.ICommand;
 import gq.genprog.simpletweaker.api.IPlayer;
 import gq.genprog.simpletweaker.events.PlayerChatEvent;
 import gq.genprog.simpletweaker.events.PlayerJoinEvent;
@@ -8,9 +9,11 @@ import gq.genprog.simpletweaker.events.PlayerLeaveEvent;
 import gq.genprog.simpletweaker.events.ServerStoppingEvent;
 import gq.genprog.simpletweaker.loader.ModLoader;
 import gq.genprog.simpletweaker.nms.wrappers.PlayerWrapper;
+import gq.genprog.simpletweaker.nms.wrappers.ServerWrapper;
 import gq.genprog.simpletweaker.tweaks.TweakStage;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Written by @offbeatwitch.
@@ -19,11 +22,13 @@ import java.io.File;
 public class MinecraftHooks {
 	public static SimpleTweaker tweaker = new SimpleTweaker();
 	public static Object mcServer;
+	public static ServerWrapper wrappedServer;
 
 	public static void injectMcServer(Object server) {
 		System.out.println("Got MinecraftServer object " + server.toString());
 
 		mcServer = server;
+		wrappedServer = new ServerWrapper(server);
 
 		ModLoader loader = new ModLoader();
 		loader.discover(new File("./tweaks/"));
@@ -64,5 +69,22 @@ public class MinecraftHooks {
 
 	public static void emitShuttingDown() {
 		tweaker.getEventBus().post(new ServerStoppingEvent());
+	}
+
+	public static boolean emitCustomCommand(String commandString, Object player) {
+		String[] parts = commandString.split("\\s");
+		String commandName = parts[0].substring(1);
+
+		IPlayer wrapped = new PlayerWrapper(player);
+		ICommand cmd = wrappedServer.getCommands().get(commandName);
+
+		if (cmd != null) {
+			String[] args = Arrays.copyOfRange(parts, 1, parts.length);
+			cmd.execute(wrapped, args);
+
+			return true;
+		}
+
+		return false;
 	}
 }

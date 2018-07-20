@@ -3,8 +3,10 @@ package gq.genprog.simpletweaker
 import gq.genprog.simpletweaker.events.EventBus
 import gq.genprog.simpletweaker.events.TweakRunEvent
 import gq.genprog.simpletweaker.loader.LoadedTweak
+import gq.genprog.simpletweaker.loader.ModManifest
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
+import gq.genprog.simpletweaker.tweaks.builtin.TestTweak
 import java.io.File
 
 /**
@@ -14,6 +16,13 @@ import java.io.File
 class SimpleTweaker {
     var tweaks: ArrayList<LoadedTweak<ITweak>> = arrayListOf()
     val eventBus = EventBus()
+
+    init {
+        // inject our own tweaks
+        val manifest = ModManifest("gq.genprog.simpletweaker", "SimpleTweaker", arrayOf())
+
+        tweaks.add(LoadedTweak(TestTweak(this), manifest))
+    }
 
     fun injectTweaks(all: List<LoadedTweak<ITweak>>) {
         tweaks.addAll(all)

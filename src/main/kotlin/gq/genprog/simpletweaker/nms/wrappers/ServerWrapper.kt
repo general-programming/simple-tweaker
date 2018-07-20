@@ -1,5 +1,6 @@
 package gq.genprog.simpletweaker.nms.wrappers
 
+import gq.genprog.simpletweaker.api.ICommand
 import gq.genprog.simpletweaker.api.IPlayer
 import gq.genprog.simpletweaker.api.IServer
 import gq.genprog.simpletweaker.api.ITextComponent
@@ -11,6 +12,8 @@ import java.util.*
  * Licensed under MIT.
  */
 class ServerWrapper(private val server: Any): IServer {
+    val commands: HashMap<String, ICommand> = hashMapOf()
+
     fun getPlayerListNms(): Any {
         val playerListField = ClassDemystifier.getServerClass().getDeclaredField("s").apply { isAccessible = true }
         return playerListField.get(server)
@@ -43,6 +46,12 @@ class ServerWrapper(private val server: Any): IServer {
 
     override fun broadcast(text: String) {
         this.broadcast(TextComponentWrapper(text), false)
+    }
+
+    override fun registerCommand(command: ICommand) {
+        for (alias in command.getAliases()) {
+            commands[alias] = command
+        }
     }
 
     override fun asNMS() = server

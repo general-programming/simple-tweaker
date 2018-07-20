@@ -2,7 +2,6 @@ package gq.genprog.simpletweaker
 
 import gq.genprog.simpletweaker.api.IServer
 import gq.genprog.simpletweaker.hooks.MinecraftHooks
-import gq.genprog.simpletweaker.nms.wrappers.ServerWrapper
 
 /**
  * Written by @offbeatwitch.
@@ -14,6 +13,6 @@ object Helper {
     }
 
     fun getMinecraftServer(): IServer {
-        return ServerWrapper(this.getNmsServer()!!)
+        return MinecraftHooks.wrappedServer
     }
 }

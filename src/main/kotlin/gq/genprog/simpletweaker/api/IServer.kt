@@ -11,4 +11,5 @@ interface IServer: INMSObject {
     fun getPlayer(uuid: UUID): IPlayer?
     fun broadcast(component: ITextComponent, isSystem: Boolean)
     fun broadcast(text: String)
+    fun registerCommand(command: ICommand)
 }

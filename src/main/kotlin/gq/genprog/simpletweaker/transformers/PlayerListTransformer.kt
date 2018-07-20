@@ -7,18 +7,15 @@ import org.objectweb.asm.tree.ClassNode
 import org.objectweb.asm.tree.InsnList
 import org.objectweb.asm.tree.MethodInsnNode
 import org.objectweb.asm.tree.VarInsnNode
-import java.lang.instrument.ClassFileTransformer
-import java.security.ProtectionDomain
 
 /**
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class PlayerListTransformer: ClassFileTransformer {
-    override fun transform(loader: ClassLoader?, className: String, classBeingRedefined: Class<*>?, protectionDomain: ProtectionDomain, classBytes: ByteArray?): ByteArray? {
-        if (classBytes == null) return null
-        if (className != "vo") return classBytes
+class PlayerListTransformer: ISingleTransformer {
+    override fun getClassName() = "vo"
 
+    override fun transform(classBytes: ByteArray): ByteArray {
         val reader = ClassReader(classBytes)
         val node = ClassNode().also { reader.accept(it, 0) }
 

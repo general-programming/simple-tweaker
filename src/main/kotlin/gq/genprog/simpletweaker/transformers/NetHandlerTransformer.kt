@@ -5,18 +5,15 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Label
 import org.objectweb.asm.tree.*
-import java.lang.instrument.ClassFileTransformer
-import java.security.ProtectionDomain
 
 /**
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class NetHandlerTransformer: ClassFileTransformer {
-    override fun transform(loader: ClassLoader?, className: String, classBeingRedefined: Class<*>?, protectionDomain: ProtectionDomain, classBytes: ByteArray?): ByteArray? {
-        if (classBytes == null) return null
-        if (className != "ub") return classBytes
+class NetHandlerTransformer: ISingleTransformer {
+    override fun getClassName() = "ub"
 
+    override fun transform(classBytes: ByteArray): ByteArray {
         val reader = ClassReader(classBytes)
         val node = ClassNode().also { reader.accept(it, 0) }
 

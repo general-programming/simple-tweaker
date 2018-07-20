@@ -1,8 +1,6 @@
 package gq.genprog.simpletweaker
 
-import gq.genprog.simpletweaker.transformers.McServerTransformer
-import gq.genprog.simpletweaker.transformers.NetHandlerTransformer
-import gq.genprog.simpletweaker.transformers.PlayerListTransformer
+import gq.genprog.simpletweaker.transformers.MainTransformer
 import java.lang.instrument.Instrumentation
 
 /**
@@ -10,9 +8,7 @@ import java.lang.instrument.Instrumentation
  * Licensed under MIT.
  */
 fun premain(agentArgs: String?, inst: Instrumentation) {
-    inst.addTransformer(McServerTransformer())
-    inst.addTransformer(PlayerListTransformer())
-    inst.addTransformer(NetHandlerTransformer())
+    inst.addTransformer(MainTransformer())
 
     println("SimpleTweaker transformers registered.")
 }

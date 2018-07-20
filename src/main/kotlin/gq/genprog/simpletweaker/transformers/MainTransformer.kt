@@ -17,7 +17,7 @@ class MainTransformer: ClassFileTransformer {
         if (classBytes == null) return null
 
         val transformer = when (className) {
-            "net.minecraft.server.MinecraftServer" -> mcServerTransformer
+            "net/minecraft/server/MinecraftServer" -> mcServerTransformer
             "ub" -> netHandlerTransformer
             "vo" -> playerListTransformer
             "bv" -> commandHandlerTransformer

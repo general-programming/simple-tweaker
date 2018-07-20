@@ -75,7 +75,7 @@ public class MinecraftHooks {
 
 	public static boolean emitCustomCommand(String commandString, Object commandHandler) {
 		String[] parts = commandString.split("\\s");
-		String commandName = parts[0].substring(1);
+		String commandName = parts[0];
 
 		ICommandHandler wrappedHandler = new CommandHandlerWrapper(commandHandler);
 		ICommand cmd = wrappedServer.getCommands().get(commandName);

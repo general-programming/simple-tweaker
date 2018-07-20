@@ -9,7 +9,7 @@ import gq.genprog.simpletweaker.nms.ClassDemystifier
  */
 open class CommandSenderWrapper(private val sender: Any): ICommandSender {
     override fun sendMessage(text: String) {
-        val sendMethod = sender.javaClass.getDeclaredMethod("a", ClassDemystifier.getITextComponentClass())
+        val sendMethod = sender.javaClass.getMethod("a", ClassDemystifier.getITextComponentClass())
 
         sendMethod.invoke(sender, ClassDemystifier.newTextComponentString(text))
     }

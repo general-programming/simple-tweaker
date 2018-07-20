@@ -2,12 +2,14 @@ package gq.genprog.simpletweaker.hooks;
 
 import gq.genprog.simpletweaker.SimpleTweaker;
 import gq.genprog.simpletweaker.api.ICommand;
+import gq.genprog.simpletweaker.api.ICommandHandler;
 import gq.genprog.simpletweaker.api.IPlayer;
 import gq.genprog.simpletweaker.events.PlayerChatEvent;
 import gq.genprog.simpletweaker.events.PlayerJoinEvent;
 import gq.genprog.simpletweaker.events.PlayerLeaveEvent;
 import gq.genprog.simpletweaker.events.ServerStoppingEvent;
 import gq.genprog.simpletweaker.loader.ModLoader;
+import gq.genprog.simpletweaker.nms.wrappers.CommandHandlerWrapper;
 import gq.genprog.simpletweaker.nms.wrappers.PlayerWrapper;
 import gq.genprog.simpletweaker.nms.wrappers.ServerWrapper;
 import gq.genprog.simpletweaker.tweaks.TweakStage;
@@ -71,16 +73,16 @@ public class MinecraftHooks {
 		tweaker.getEventBus().post(new ServerStoppingEvent());
 	}
 
-	public static boolean emitCustomCommand(String commandString, Object player) {
+	public static boolean emitCustomCommand(String commandString, Object commandHandler) {
 		String[] parts = commandString.split("\\s");
 		String commandName = parts[0].substring(1);
 
-		IPlayer wrapped = new PlayerWrapper(player);
+		ICommandHandler wrappedHandler = new CommandHandlerWrapper(commandHandler);
 		ICommand cmd = wrappedServer.getCommands().get(commandName);
 
 		if (cmd != null) {
 			String[] args = Arrays.copyOfRange(parts, 1, parts.length);
-			cmd.execute(wrapped, args);
+			cmd.execute(wrappedHandler.getCommandSender(), args);
 
 			return true;
 		}

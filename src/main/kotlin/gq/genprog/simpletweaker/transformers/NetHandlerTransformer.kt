@@ -3,7 +3,6 @@ package gq.genprog.simpletweaker.transformers
 import jdk.internal.org.objectweb.asm.Opcodes
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.Label
 import org.objectweb.asm.tree.*
 
 /**
@@ -18,7 +17,7 @@ class NetHandlerTransformer: ISingleTransformer {
         val node = ClassNode().also { reader.accept(it, 0) }
 
         node.methods.find { it.name == "a" && it.desc == "(Lmh;)V" }?.apply {
-            instructions.toArray().find {
+            instructions.find {
                 if (it.opcode == Opcodes.INVOKEVIRTUAL) {
                     val inv = it as MethodInsnNode
 
@@ -48,24 +47,6 @@ class NetHandlerTransformer: ISingleTransformer {
             extra.add(MethodInsnNode(Opcodes.INVOKESTATIC,
                     "gq/genprog/simpletweaker/hooks/MinecraftHooks",
                     "emitPlayerLeave", "(Ljava/lang/Object;)V", false))
-
-            instructions.insert(extra)
-        }
-
-        node.methods.find { it.name == "c" && it.desc == "(Ljava/lang/String;)V" }?.apply {
-            val extra = InsnList()
-
-            val label = LabelNode(Label())
-
-            extra.add(VarInsnNode(Opcodes.ALOAD, 1))
-            extra.add(VarInsnNode(Opcodes.ALOAD, 0))
-            extra.add(FieldInsnNode(Opcodes.GETFIELD, "ub", "b", "Lte;"))
-            extra.add(MethodInsnNode(Opcodes.INVOKESTATIC,
-                    "gq/genprog/simpletweaker/hooks/MinecraftHooks",
-                    "emitCustomCommand", "(Ljava/lang/String;Ljava/lang/Object;)Z", false))
-            extra.add(JumpInsnNode(Opcodes.IFEQ, label))
-            extra.add(InsnNode(Opcodes.RETURN))
-            extra.add(label)
 
             instructions.insert(extra)
         }

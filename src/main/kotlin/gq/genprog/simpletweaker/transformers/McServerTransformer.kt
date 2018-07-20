@@ -3,7 +3,10 @@ package gq.genprog.simpletweaker.transformers
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
-import org.objectweb.asm.tree.*
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.InsnList
+import org.objectweb.asm.tree.InsnNode
+import org.objectweb.asm.tree.MethodInsnNode
 
 /**
  * Written by @offbeatwitch.
@@ -15,30 +18,25 @@ class McServerTransformer: ISingleTransformer {
     override fun transform(classBytes: ByteArray): ByteArray {
         val reader = ClassReader(classBytes)
         val node = ClassNode()
-        reader.accept(node, ClassReader.EXPAND_FRAMES)
+        reader.accept(node, 0)
 
         // main method
 
-        val mainMeth = node.methods.find { it.name == "main" } ?: return classBytes
-        var foundNode: AbstractInsnNode? = null
-        for (insr in mainMeth.instructions) {
-            if (insr.opcode == Opcodes.INVOKESPECIAL) {
-                val invoke = insr as MethodInsnNode
+        node.methods.find { it.name == "main" }?.also { mainMeth ->
+            mainMeth.instructions.find {
+                if (it.opcode != Opcodes.INVOKESPECIAL) return@find false
 
-                if (invoke.owner == "sn" && invoke.name == "<init>") {
-                    foundNode = invoke
-                }
+                it as MethodInsnNode
+                it.owner == "sn" && it.name == "<init>"
+            }?.apply {
+                val extra = InsnList()
+                extra.add(InsnNode(Opcodes.DUP))
+                extra.add(MethodInsnNode(Opcodes.INVOKESTATIC, "gq/genprog/simpletweaker/hooks/MinecraftHooks",
+                        "injectMcServer", "(Ljava/lang/Object;)V", false))
+
+                mainMeth.instructions.insert(this, extra)
             }
         }
-
-        if (foundNode == null) return classBytes
-
-        val extraInstructions = InsnList()
-        extraInstructions.add(InsnNode(Opcodes.DUP))
-        extraInstructions.add(MethodInsnNode(Opcodes.INVOKESTATIC, "gq/genprog/simpletweaker/hooks/MinecraftHooks",
-                "injectMcServer", "(Ljava/lang/Object;)V", false))
-
-        mainMeth.instructions.insert(foundNode, extraInstructions)
 
         // world gen method
 
@@ -61,7 +59,7 @@ class McServerTransformer: ISingleTransformer {
                     "emitShuttingDown", "()V", false))
         }
 
-        val writer = ClassWriter(ClassWriter.COMPUTE_FRAMES)
+        val writer = ClassWriter(0)
         node.accept(writer)
 
         return writer.toByteArray()

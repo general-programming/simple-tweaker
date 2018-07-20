@@ -8,7 +8,7 @@ import java.util.*
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class PlayerWrapper(private val playerInst: Any): IPlayer {
+class PlayerWrapper(private val playerInst: Any): CommandSenderWrapper(playerInst), IPlayer {
     override fun getUniqueId(): UUID = ClassDemystifier.getPlayerUID(playerInst)
 
     override fun getUsername(): String = ClassDemystifier.getPlayerName(playerInst)

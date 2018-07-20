@@ -10,15 +10,15 @@ import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
 
 /**
+ * Internal tweak used by SimpleTweaker
+ *
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class TestTweak(val tweaker: SimpleTweaker) : ITweak {
+class InternalTweak(val tweaker: SimpleTweaker) : ITweak {
     override fun getTweakStage() = TweakStage.POST_WORLD
 
     override fun runTweak(ev: TweakRunEvent) {
-        println("TestTweak registered")
-
         ev.registerCommand(LoadedTweaksCmd(tweaker))
     }
 

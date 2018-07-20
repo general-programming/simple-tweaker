@@ -1,6 +1,6 @@
 # Simple Tweaker
 
-A really simple reflection-filled mod loader for Minecraft 1.13 servers
+A really simple reflection-filled mod loader for Minecraft 1.13 servers & written in Kotlin
 
 ### building
 
@@ -50,5 +50,65 @@ they contain a top-level file, `tweak.json`, along with the actual classes
   "tweaks": [ // array of tweak class names (implement ITweak)
     "my.package.tweak.MyTweak"
   ]
+}
+```
+
+#### writing tweaks
+
+tweak classes look something like the following:
+
+```kotlin
+class MyTweak: ITweak {
+    // tweak stages are:
+    // - INIT: your tweak is called before the server boots
+    // - PRE_WORLD: your tweak is called right before the world is loaded
+    // - POST_WORLD: your tweak is called after the world is loaded
+    // it's recommended that you use POST_WORLD unless you have a reason to run beforehand
+    override fun getTweakStage() = TweakStage.POST_WORLD
+
+    override fun runTweak(ev: TweakRunEvent) {
+        // this method is called according to your tweak stage
+        // you also generally register commands here
+    }
+}
+```
+
+a full example (with commands) can be found in this repo: [InternalTweak.kt](https://github.com/general-programming/simple-tweaker/blob/master/src/main/kotlin/gq/genprog/simpletweaker/tweaks/builtin/InternalTweak.kt)
+
+tweaks can also receive events:
+
+```kotlin
+@EventHandler fun onPlayerJoin(ev: PlayerJoinEvent) {
+    // called when a player joins
+}
+```
+
+#### commands
+
+tweaks can register basic commands. they do not currently use mojang's brigadier command library.  
+command classes extend `ICommand`:
+
+```kotlin
+class MyCommand: ICommand {
+    override fun getAliases(): Array<String> = arrayOf("hello")
+    override fun getDescription(): String = "Hello, world!"
+    
+    override fun execute(sender: ICommandSender, array: Array<String>) {
+        sender.sendMessage("Hi, world!")
+    }
+}
+```
+
+you register commands in your `runTweak` method:
+
+```kotlin
+class MyTweak: ITweak {
+    // ...
+    
+    override fun runTweak(ev: TweakRunEvent) {
+        // ...
+        
+        ev.registerCommand(MyCommand())
+    }
 }
 ```

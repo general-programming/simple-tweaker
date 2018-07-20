@@ -6,7 +6,7 @@ import gq.genprog.simpletweaker.loader.LoadedTweak
 import gq.genprog.simpletweaker.loader.ModManifest
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
-import gq.genprog.simpletweaker.tweaks.builtin.TestTweak
+import gq.genprog.simpletweaker.tweaks.builtin.InternalTweak
 import java.io.File
 
 /**
@@ -21,7 +21,7 @@ class SimpleTweaker {
         // inject our own tweaks
         val manifest = ModManifest("gq.genprog.simpletweaker", "SimpleTweaker", arrayOf())
 
-        tweaks.add(LoadedTweak(TestTweak(this), manifest))
+        tweaks.add(LoadedTweak(InternalTweak(this), manifest))
     }
 
     fun injectTweaks(all: List<LoadedTweak<ITweak>>) {

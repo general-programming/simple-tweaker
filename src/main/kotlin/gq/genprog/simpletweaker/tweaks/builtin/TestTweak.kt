@@ -35,7 +35,7 @@ class TestTweak(val tweaker: SimpleTweaker) : ITweak {
                 "\u00A7a${it.name} (${it.id})"
             }
 
-            sender.sendMessage("\u00A77Plugins: $text\u00A7r")
+            sender.sendMessage("\u00A77Tweaks: $text\u00A7r")
         }
     }
 }

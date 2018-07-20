@@ -7,37 +7,18 @@ import java.util.*
  * Licensed under MIT.
  */
 object ClassDemystifier {
-    fun getServerClass() = Class.forName("net.minecraft.server.MinecraftServer")
-
-    fun getTextComponentBaseClass(): Class<*> {
-        return Class.forName("ig")
-    }
-
-    fun getTextComponentStringClass(): Class<*> {
-        return Class.forName("iq")
-    }
-
-    fun getITextComponentClass(): Class<*> {
-        return Class.forName("ij")
-    }
+    fun getServerClass(): Class<*> = Class.forName("net.minecraft.server.MinecraftServer")
+    fun getITextComponentClass(): Class<*> = Class.forName("ij")
+    fun getTextComponentBaseClass(): Class<*> = Class.forName("ig")
+    fun getTextComponentStringClass(): Class<*> = Class.forName("iq")
+    fun getPlayerMPClass(): Class<*> = Class.forName("te")
+    fun getPlayerClass(): Class<*> = Class.forName("aoc")
+    fun getEntityClass(): Class<*> = Class.forName("aeo")
+    fun getPlayerListClass(): Class<*> = Class.forName("vo")
 
     fun newTextComponentString(text: String): Any {
         return this.getTextComponentStringClass().getDeclaredConstructor(String::class.java).newInstance(text)
     }
-
-    fun getPlayerMPClass(): Class<*> {
-        return Class.forName("te")
-    }
-
-    fun getPlayerClass(): Class<*> {
-        return Class.forName("aoc")
-    }
-
-    fun getEntityClass(): Class<*> {
-        return Class.forName("aeo")
-    }
-
-    fun getPlayerListClass() = Class.forName("vo")
 
     fun getPlayerName(player: Any): String {
         val getNameMeth = this.getPlayerClass().getDeclaredMethod("bv")

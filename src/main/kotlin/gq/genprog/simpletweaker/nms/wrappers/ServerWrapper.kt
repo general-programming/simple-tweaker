@@ -37,6 +37,17 @@ class ServerWrapper(private val server: Any): IServer {
         return PlayerWrapper(nmsPlayer)
     }
 
+    override fun getOnlinePlayers(): List<IPlayer> {
+        val playerList = this.getPlayerListNms()
+
+        val playerListField = ClassDemystifier.getPlayerListClass().getDeclaredField("i").apply { isAccessible = true }
+        val nmsPlayerList = playerListField.get(playerList) as List<*>
+
+        return nmsPlayerList.map {
+            PlayerWrapper(it!!)
+        }
+    }
+
     override fun broadcast(component: ITextComponent, isSystem: Boolean) {
         val broadcastMeth = ClassDemystifier.getPlayerListClass().getDeclaredMethod("a",
                 ClassDemystifier.getITextComponentClass(), Boolean::class.java)

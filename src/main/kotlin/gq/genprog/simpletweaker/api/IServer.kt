@@ -9,6 +9,7 @@ import java.util.*
 interface IServer: INMSObject {
     fun getPlayer(username: String): IPlayer?
     fun getPlayer(uuid: UUID): IPlayer?
+    fun getOnlinePlayers(): List<IPlayer>
     fun broadcast(component: ITextComponent, isSystem: Boolean)
     fun broadcast(text: String)
     fun registerCommand(command: ICommand)

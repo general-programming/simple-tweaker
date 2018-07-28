@@ -3,8 +3,6 @@ package gq.genprog.simpletweaker.tweaks.builtin
 import gq.genprog.simpletweaker.SimpleTweaker
 import gq.genprog.simpletweaker.api.ICommand
 import gq.genprog.simpletweaker.api.ICommandSender
-import gq.genprog.simpletweaker.events.EventHandler
-import gq.genprog.simpletweaker.events.PlayerChatEvent
 import gq.genprog.simpletweaker.events.TweakRunEvent
 import gq.genprog.simpletweaker.tweaks.ITweak
 import gq.genprog.simpletweaker.tweaks.TweakStage
@@ -20,10 +18,6 @@ class InternalTweak(val tweaker: SimpleTweaker) : ITweak {
 
     override fun runTweak(ev: TweakRunEvent) {
         ev.registerCommand(LoadedTweaksCmd(tweaker))
-    }
-
-    @EventHandler fun onPlayerChat(event: PlayerChatEvent) {
-        println("${event.player.getUsername()} wrote: ${event.message}")
     }
 
     class LoadedTweaksCmd(val tweaker: SimpleTweaker) : ICommand {

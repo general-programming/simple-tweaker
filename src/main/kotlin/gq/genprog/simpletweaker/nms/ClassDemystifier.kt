@@ -17,6 +17,7 @@ object ClassDemystifier {
     fun getPlayerListClass(): Class<*> = Class.forName("vo")
     fun getCommandHandlerClass(): Class<*> = Class.forName("bu")
     fun getCommandSenderClass(): Class<*> = Class.forName("bt")
+    fun getCommandRegistryClass(): Class<*> = Class.forName("bv")
 
     fun newTextComponentString(text: String): Any {
         return this.getTextComponentStringClass().getDeclaredConstructor(String::class.java).newInstance(text)

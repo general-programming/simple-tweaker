@@ -9,7 +9,7 @@ import org.objectweb.asm.tree.*
  * Written by @offbeatwitch.
  * Licensed under MIT.
  */
-class CommandHandlerTransformer: ISingleTransformer {
+class CommandRegistryTransformer: ISingleTransformer {
     override fun getClassName() = "bv"
 
     override fun transform(classBytes: ByteArray): ByteArray {
@@ -24,7 +24,7 @@ class CommandHandlerTransformer: ISingleTransformer {
 
                 extra.add(VarInsnNode(Opcodes.ALOAD, 2))
                 extra.add(VarInsnNode(Opcodes.ALOAD, 1))
-                extra.add(MethodInsnNode(jdk.internal.org.objectweb.asm.Opcodes.INVOKESTATIC,
+                extra.add(MethodInsnNode(Opcodes.INVOKESTATIC,
                         "gq/genprog/simpletweaker/hooks/MinecraftHooks",
                         "emitCustomCommand", "(Ljava/lang/String;Ljava/lang/Object;)Z", false))
                 extra.add(JumpInsnNode(Opcodes.IFEQ, label))

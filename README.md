@@ -35,7 +35,7 @@ start your minecraft server as follows:
 java -javaagent:simpletweaker-0.1.0-all.jar -jar minecraft_server.jar nogui
 ```
 
-### tweaks
+## tweaks
 
 mods are known as "tweaks" (or more precisely "tweak holders")  
 they are jar files that lives in the `tweaks/` subfolder of the server directory  

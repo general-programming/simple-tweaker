@@ -11,7 +11,7 @@ class MainTransformer: ClassFileTransformer {
     val mcServerTransformer = McServerTransformer()
     val netHandlerTransformer = NetHandlerTransformer()
     val playerListTransformer = PlayerListTransformer()
-    val commandHandlerTransformer = CommandHandlerTransformer()
+    val commandRegistryTransformer = CommandRegistryTransformer()
 
     override fun transform(loader: ClassLoader?, className: String, classBeingRedefined: Class<*>?, protectionDomain: ProtectionDomain, classBytes: ByteArray?): ByteArray? {
         if (classBytes == null) return null
@@ -20,7 +20,7 @@ class MainTransformer: ClassFileTransformer {
             "net/minecraft/server/MinecraftServer" -> mcServerTransformer
             "ub" -> netHandlerTransformer
             "vo" -> playerListTransformer
-            "bv" -> commandHandlerTransformer
+            "bv" -> commandRegistryTransformer
             else -> null
         }
 

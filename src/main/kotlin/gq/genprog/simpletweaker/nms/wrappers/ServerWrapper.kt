@@ -1,9 +1,6 @@
 package gq.genprog.simpletweaker.nms.wrappers
 
-import gq.genprog.simpletweaker.api.ICommand
-import gq.genprog.simpletweaker.api.IPlayer
-import gq.genprog.simpletweaker.api.IServer
-import gq.genprog.simpletweaker.api.ITextComponent
+import gq.genprog.simpletweaker.api.*
 import gq.genprog.simpletweaker.nms.ClassDemystifier
 import java.util.*
 
@@ -63,6 +60,24 @@ class ServerWrapper(private val server: Any): IServer {
         for (alias in command.getAliases()) {
             commands[alias] = command
         }
+    }
+
+    override fun getCommandHandler(): ICommandHandler {
+        val cmdHandlerMeth = ClassDemystifier.getServerClass().getDeclaredMethod("aL")
+        val nmsCmdHandler = cmdHandlerMeth.invoke(server)
+
+        return CommandHandlerWrapper(nmsCmdHandler)
+    }
+
+    override fun getCommandRegistry(): ICommandRegistry {
+        val cmdRegistryMeth = ClassDemystifier.getServerClass().getDeclaredMethod("aK")
+        val nmsCmdRegistry = cmdRegistryMeth.invoke(server)
+
+        return CommandRegistryWrapper(nmsCmdRegistry)
+    }
+
+    override fun dispatch(command: String) {
+        this.getCommandRegistry().dispatch(this.getCommandHandler(), command)
     }
 
     override fun asNMS() = server
